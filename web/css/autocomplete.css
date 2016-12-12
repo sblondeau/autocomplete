@@ -1,0 +1,22 @@
+.autocomp_block {
+    position:relative;
+}
+
+.autocomp_list {
+    padding:5px;
+    background-color: rgba(250,250,255,0.7);
+    border:1px solid #218BC3;
+    position:absolute;
+    top:4em;
+    width:50%;
+}
+.autocomp_list:empty {
+    display:none;
+}
+.autocomp_list > li {
+    padding:5px;
+    border-bottom:1px solid #218BC3;
+    color:#218BC3;
+    cursor:pointer;
+    list-style: none;
+}

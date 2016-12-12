@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/autocomplete.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <h1>Contact creation</h1>
+
+        {{ form_start(form) }}
+        {{ form_row(form.lastname) }}
+        {{ form_row(form.firstname) }}
+        {{ form_row(form.address) }}
+        {{ form_row(form.zipcode) }}
+        <div class="autocomp_block">
+            {{ form_row(form.town) }}
+            <ul id="townResults" class="autocomp_list"></ul>
+        </div>
+        <input type="submit" value="Create" />
+        {{ form_end(form) }}
+
+        <ul>
+            <li>
+                <a href="{{ path('contact_index') }}">Back to the list</a>
+            </li>
+        </ul>
+    </div>
+
+    <script>
+        $('.autocomplete').keypress(function () {
+            $('#townResults').show();
+
+            var url = "{{ path('ajaxTown', {'input':'ajaxtowninput'} )}}";
+            url = url.replace('ajaxtowninput', $(this).val());
+            $.post(url)
+                .done(function (res) {
+                    var html = '';
+                    var towns = JSON.parse(res.data);
+                    $.each(towns, function (k, v) {
+                        html += "<li>" + v.town + "</li>";
+                    });
+                    $("#townResults").html(html);
+                });
+        });
+
+        $('#townResults').click(function (e) {
+            $('.autocomplete').val($(e.target).text());
+            $('#townResults').hide();
+
+        });
+    </script>
+
+{% endblock %}
